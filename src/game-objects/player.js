@@ -22,7 +22,12 @@ export class Player extends Phaser.GameObjects.Rectangle {
 			Phaser.Input.Keyboard.KeyCodes.SPACE
 		);
 
-		this.jumpTween = undefined;
+		this.jumpTween = this.scene.tweens.add({
+			targets: this,
+			duration: 1000,
+			repeat: -1,
+			angle: { from: 0, to: 360 },
+		});
 	}
 
 	update() {
@@ -30,7 +35,7 @@ export class Player extends Phaser.GameObjects.Rectangle {
 			this.jump();
 		} else if (this.body.blocked.down) {
 			// stop spinning and go flat
-			this.jumpTween?.stop();
+			this.jumpTween.pause();
 			this.rotation = 0;
 		}
 	}
@@ -42,12 +47,6 @@ export class Player extends Phaser.GameObjects.Rectangle {
 		}
 
 		this.body.setVelocityY(-350);
-
-		this.jumpTween = this.scene.tweens.add({
-			targets: this,
-			duration: 1000,
-			repeat: -1,
-			angle: { from: 0, to: 360 },
-		});
+		this.jumpTween.restart();
 	}
 }
