@@ -32,7 +32,7 @@ export class GameScene extends Phaser.Scene {
 		this.obstacles = this.add.group();
 		this.generator = new Generator(this);
 
-		this.player = new Player(this, WIDTH / 2, HEIGHT / 2);
+		this.player = new Player(this, WIDTH / 4, HEIGHT / 2);
 
 		this.physics.add.collider(
 			this.player,
