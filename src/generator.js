@@ -1,5 +1,6 @@
 import { Cloud } from "./game-objects/cloud";
 import { Obstacle } from "./game-objects/obstacle";
+import { Coin } from "./game-objects/coin";
 
 export class Generator {
 	constructor(scene) {
@@ -13,6 +14,7 @@ export class Generator {
 		console.log("Generator init");
 		this.generateCloud();
 		this.generateObstacle();
+		this.generateCoin();
 	}
 
 	generateCloud() {
@@ -31,6 +33,17 @@ export class Generator {
 		this.scene.time.delayedCall(
 			Phaser.Math.Between(1500, 2500),
 			() => this.generateObstacle(),
+			undefined,
+			this
+		);
+	}
+
+	generateCoin() {
+		this.scene.coins.add(new Coin(this.scene));
+
+		this.scene.time.delayedCall(
+			Phaser.Math.Between(500, 1500),
+			() => this.generateCoin(),
 			undefined,
 			this
 		);

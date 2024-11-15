@@ -46,6 +46,7 @@ export class Player extends Phaser.GameObjects.Rectangle {
 			return;
 		}
 
+		this.scene.sound.play("jump");
 		this.body.setVelocityY(-350);
 		this.jumpTween.restart();
 	}

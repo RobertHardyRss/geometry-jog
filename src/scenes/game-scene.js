@@ -23,6 +23,13 @@ export class GameScene extends Phaser.Scene {
 			"/assets/fonts/arcade.png",
 			"/assets/fonts/arcade.xml"
 		);
+
+		this.load.audio("jump", "/assets/sounds/jump.mp3");
+
+		this.load.spritesheet("coin", "/assets/images/coin.png", {
+			frameWidth: 32,
+			frameHeight: 32,
+		});
 	}
 
 	create() {
@@ -30,14 +37,34 @@ export class GameScene extends Phaser.Scene {
 		this.cameras.main.setBackgroundColor(0x222222);
 
 		this.obstacles = this.add.group();
+		this.coins = this.add.group();
 		this.generator = new Generator(this);
 
 		this.player = new Player(this, WIDTH / 4, HEIGHT / 2);
+
+		const coinAnim = this.anims.create({
+			key: "coin",
+			frames: this.anims.generateFrameNumbers("coin", {
+				start: 0,
+				end: 7,
+			}),
+			frameRate: 8,
+		});
 
 		this.physics.add.collider(
 			this.player,
 			this.obstacles,
 			this.hitObstacle,
+			() => {
+				return true;
+			},
+			this
+		);
+
+		this.physics.add.overlap(
+			this.player,
+			this.coins,
+			this.hitCoin,
 			() => {
 				return true;
 			},
@@ -67,6 +94,11 @@ export class GameScene extends Phaser.Scene {
 	hitObstacle(player, obstacle) {
 		console.log("player hit");
 		this.scene.start("gameover");
+	}
+
+	hitCoin(player, coin) {
+		this.updateScore(100);
+		coin.destroy();
 	}
 
 	updateScore(points = 1) {
